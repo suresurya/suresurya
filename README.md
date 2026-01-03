@@ -40,9 +40,9 @@ I have built multiple **database-driven Java applications** and I’m actively s
 ---
 
 ### 📫 Connect With Me
-- 💼 [LinkedIn](https://www.linkedin.com/)  
+- 💼 [LinkedIn](https://www.linkedin.com/in/sure-sri-veknat-rama-surya-b924a6332/)  
 - 💻 [GitHub](https://github.com/suresurya)  
-- 📧 Email: *add your email here*
+- 📧 Email: suresrivenkatramasurya@gmail.com
 
 ---
 
