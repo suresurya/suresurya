@@ -8,6 +8,9 @@ on:
     branches:
       - main
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,6 +20,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Create output directory
         run: mkdir -p ./profile-summary-card-output
@@ -24,31 +29,48 @@ jobs:
       - name: Generate All Themes
         uses: vn7n24fzkq/github-profile-summary-cards@release
         env:
-          GITHUB_TOKEN: ${{ secrets.METRICS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           USERNAME: suresurya
           AUTO_PUSH: false
+          THEME: 2077
+        continue-on-error: true
 
       - name: Pick and Stabilize Random Themes
         run: |
           dark_themes=("radical" "dracula" "monokai" "tokyonight" "onedark" "2077")
           light_themes=("default" "github" "nord_bright")
-          PICKED_DARK=${dark_themes[$RANDOM % ${#dark_themes[@]}]}
-          PICKED_LIGHT=${light_themes[$RANDOM % ${#light_themes[@]}]}
-          echo "Picked: Dark($PICKED_DARK), Light($PICKED_LIGHT)"
+          
           mkdir -p profile-summary-card-output/dark-mode
           mkdir -p profile-summary-card-output/light-mode
-          if [ -d "profile-summary-card-output/$PICKED_DARK" ]; then
-            cp -r profile-summary-card-output/$PICKED_DARK/* profile-summary-card-output/dark-mode/
-          else
-            echo "Warning: Theme directory $PICKED_DARK not found"
+          
+          # Find first available dark theme
+          for theme in "${dark_themes[@]}"; do
+            if [ -d "profile-summary-card-output/$theme" ]; then
+              PICKED_DARK=$theme
+              break
+            fi
+          done
+          
+          # Find first available light theme
+          for theme in "${light_themes[@]}"; do
+            if [ -d "profile-summary-card-output/$theme" ]; then
+              PICKED_LIGHT=$theme
+              break
+            fi
+          done
+          
+          echo "Using: Dark($PICKED_DARK), Light($PICKED_LIGHT)"
+          
+          if [ -n "$PICKED_DARK" ] && [ -d "profile-summary-card-output/$PICKED_DARK" ]; then
+            cp -r profile-summary-card-output/$PICKED_DARK/* profile-summary-card-output/dark-mode/ 2>/dev/null || true
           fi
-          if [ -d "profile-summary-card-output/$PICKED_LIGHT" ]; then
-            cp -r profile-summary-card-output/$PICKED_LIGHT/* profile-summary-card-output/light-mode/
-          else
-            echo "Warning: Theme directory $PICKED_LIGHT not found"
+          
+          if [ -n "$PICKED_LIGHT" ] && [ -d "profile-summary-card-output/$PICKED_LIGHT" ]; then
+            cp -r profile-summary-card-output/$PICKED_LIGHT/* profile-summary-card-output/light-mode/ 2>/dev/null || true
           fi
-          find profile-summary-card-output/ -maxdepth 1 -mindepth 1 -not -name "dark-mode" -not -name "light-mode" -exec rm -rf {} +
+          
+          find profile-summary-card-output/ -maxdepth 1 -mindepth 1 -not -name "dark-mode" -not -name "light-mode" -exec rm -rf {} + 2>/dev/null || true
 
       - name: Commit and Push
         run: |
@@ -56,5 +78,5 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A profile-summary-card-output/
           git status
-          git commit -m "chore: update profile summary cards with random themes [skip ci]" || echo "No changes to commit"
-          git push -f origin main
+          git commit -m "chore: update profile summary cards [skip ci]" || echo "No changes to commit"
+          git push -f origin main || echo "Push failed, continuing"
