@@ -1,1 +1,83 @@
-name: Profile Summary Cards\n\non: [push]\n\njobs:\n  build:\n    runs-on: ubuntu-latest\n    steps:\n    - name: Checkout Code\n      uses: actions/checkout@v4\n\n    - name: Set up Node.js\n      uses: actions/setup-node@v3\n      with:\n        node-version: '24'\n        always-auth: true\n        registry-url: https://npm.pkg.github.com\n\n    - name: Generate Profile Summary Cards\n      run: node generate-cards.js\n\n    - name: Create Directory\n      run: mkdir -p output\n      continue-on-error: true\n\n    - name: Error Handling\n      run: |\n        if [ ! -d output ]; then echo 'Directory does not exist' >&2; exit 1; fi\n        echo 'Successfully created directory or it already exists.'\n\n    - name: Use PAT_TOKEN as GITHUB_TOKEN\n      env:\n        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}\n        NODE_ENV: production\n      run: echo 'Using PAT_TOKEN for authentication.'\n
+name: GitHub-Profile-Summary-Cards
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: generate-github-cards
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate All Themes
+        uses: vn7n24fzkq/github-profile-summary-cards@release
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+        with:
+          USERNAME: suresurya
+          AUTO_PUSH: false
+        continue-on-error: true
+
+      - name: Create output directories
+        run: |
+          mkdir -p profile-summary-card-output/dark-mode
+          mkdir -p profile-summary-card-output/light-mode
+
+      - name: Pick and Stabilize Random Themes
+        run: |
+          dark_themes=("radical" "dracula" "monokai" "tokyonight" "onedark")
+          light_themes=("default" "github" "nord_bright")
+          
+          PICKED_DARK=""
+          PICKED_LIGHT=""
+          
+          for theme in "${dark_themes[@]}"; do
+            if [ -d "profile-summary-card-output/$theme" ] && [ "$(ls -A profile-summary-card-output/$theme 2>/dev/null)" ]; then
+              PICKED_DARK=$theme
+              echo "Using dark theme: $PICKED_DARK"
+              break
+            fi
+          done
+          
+          for theme in "${light_themes[@]}"; do
+            if [ -d "profile-summary-card-output/$theme" ] && [ "$(ls -A profile-summary-card-output/$theme 2>/dev/null)" ]; then
+              PICKED_LIGHT=$theme
+              echo "Using light theme: $PICKED_LIGHT"
+              break
+            fi
+          done
+          
+          if [ -n "$PICKED_DARK" ] && [ -d "profile-summary-card-output/$PICKED_DARK" ]; then
+            cp -r profile-summary-card-output/$PICKED_DARK/* profile-summary-card-output/dark-mode/ 2>/dev/null || true
+            echo "Copied dark theme"
+          fi
+          
+          if [ -n "$PICKED_LIGHT" ] && [ -d "profile-summary-card-output/$PICKED_LIGHT" ]; then
+            cp -r profile-summary-card-output/$PICKED_LIGHT/* profile-summary-card-output/light-mode/ 2>/dev/null || true
+            echo "Copied light theme"
+          fi
+          
+          find profile-summary-card-output/ -maxdepth 1 -type d ! -name "profile-summary-card-output" ! -name "dark-mode" ! -name "light-mode" -exec rm -rf {} + 2>/dev/null || true
+          
+          echo "Cleanup complete"
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A profile-summary-card-output/
+          git status
+          git commit -m "chore: update profile summary cards with random themes [skip ci]" || echo "No changes to commit"
+          git push -f origin main || echo "Push completed"
