@@ -37,8 +37,8 @@ jobs:
 
       - name: Pick and Stabilize Random Themes
         run: |
-          dark_themes=("radical" "dracula" "monokai" "tokyonight" "onedark")
-          light_themes=("default" "github" "nord_bright")
+          dark_themes=("merko" "chartreuse_dark" "green" "blue_green")
+          light_themes=("blue_green" "github" "default")
           
           PICKED_DARK=""
           PICKED_LIGHT=""
