@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build:
@@ -54,4 +54,4 @@ jobs:
           git add -A profile-summary-card-output/
           git status
           git commit -m "chore: update profile summary cards with random themes [skip ci]" || echo "No changes to commit"
-          git push -f origin master
+          git push -f origin main
