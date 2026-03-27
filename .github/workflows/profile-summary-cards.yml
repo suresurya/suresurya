@@ -26,25 +26,15 @@ jobs:
           USERNAME: suresurya
           AUTO_PUSH: false
 
-      - name: Pick and Stabilize Random Themes
+      - name: Set Green Theme
         run: |
-          # Define theme pools (only truly white ones for light)
-          dark_themes=("radical" "dracula" "monokai" "tokyonight" "onedark" "2077")
-          light_themes=("default" "github" "nord_bright")
-          
-          # Pick random ones
-          PICKED_DARK=${dark_themes[$RANDOM % ${#dark_themes[@]}]}
-          PICKED_LIGHT=${light_themes[$RANDOM % ${#light_themes[@]}]}
-          
-          echo "Picked: Dark($PICKED_DARK), Light($PICKED_LIGHT)"
-          
-          # Create and populate stable directories
+          # Use GitHub's green themes for both modes
           mkdir -p profile-summary-card-output/dark-mode
           mkdir -p profile-summary-card-output/light-mode
-          cp -r profile-summary-card-output/$PICKED_DARK/* profile-summary-card-output/dark-mode/
-          cp -r profile-summary-card-output/$PICKED_LIGHT/* profile-summary-card-output/light-mode/
+          cp -r profile-summary-card-output/github_dark/* profile-summary-card-output/dark-mode/
+          cp -r profile-summary-card-output/github/* profile-summary-card-output/light-mode/
           
-          # IMPORTANT: Remove all themed folders EXCEPT dark-mode and light-mode
+          # Remove all themed folders EXCEPT dark-mode and light-mode
           find profile-summary-card-output/ -maxdepth 1 -mindepth 1 -not -name "dark-mode" -not -name "light-mode" -exec rm -rf {} +
 
       - name: Commit and Push
