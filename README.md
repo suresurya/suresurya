@@ -62,9 +62,9 @@ I have built multiple **database-driven Java applications** and I’m actively s
 ## Contribution
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/suresurya/suresurya/output/github-contribution-grid-snake-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/suresurya/suresurya/output/github-contribution-grid-snake.svg">
-  <img alt="github contribution grid snake animation" src="https://raw.githubusercontent.com/suresurya/suresurya/output/github-contribution-grid-snake.svg">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/suresurya/suresurya/output/github-contribution-grid-snake-dark.svg?v=green1">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/suresurya/suresurya/output/github-contribution-grid-snake.svg?v=green1">
+  <img alt="github contribution grid snake animation" src="https://raw.githubusercontent.com/suresurya/suresurya/output/github-contribution-grid-snake.svg?v=green1">
 </picture>
 
 
