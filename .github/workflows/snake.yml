@@ -8,10 +8,10 @@ on:
   # allows to manually run the job at any time
   workflow_dispatch:
   
-  # run on every push on the main branch
+  # run on every push on the master branch
   push:
     branches:
-    - main
+    - master
   
   
 
@@ -29,8 +29,8 @@ jobs:
         with:
           github_user_name: ${{ github.repository_owner }}
           outputs: |
-            dist/github-contribution-grid-snake.svg?color_snake=%23216e39&color_dots=%23216e39,%23216e39,%23216e39,%23216e39,%23216e39
-            dist/github-contribution-grid-snake-dark.svg?palette=github-dark&color_snake=%2339d353&color_dots=%2339d353,%2339d353,%2339d353,%2339d353,%2339d353
+            dist/github-contribution-grid-snake.svg?color_snake=%2329a329
+            dist/github-contribution-grid-snake-dark.svg?palette=github-dark&color_snake=%2339d353
   
   
       # push the content of <build_dir> to a branch
