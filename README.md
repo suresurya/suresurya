@@ -1,4 +1,4 @@
-I’m **S Sri Venkat Rama Surya** — A Java Dev ☕  
+I’m **S Sri Venkat Rama Surya** — A Java Developer ☕  
 ---
 
 ### 👨‍💻 About Me
