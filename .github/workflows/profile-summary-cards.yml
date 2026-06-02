@@ -16,12 +16,12 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Generate All Themes
         uses: vn7n24fzkq/github-profile-summary-cards@release
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           USERNAME: suresurya
           AUTO_PUSH: false
@@ -31,11 +31,18 @@ jobs:
           # Use GitHub's green themes for both modes
           mkdir -p profile-summary-card-output/dark-mode
           mkdir -p profile-summary-card-output/light-mode
-          cp -r profile-summary-card-output/github_dark/* profile-summary-card-output/dark-mode/
-          cp -r profile-summary-card-output/github/* profile-summary-card-output/light-mode/
+          
+          # Copy generated cards if they exist
+          if [ -d "profile-summary-card-output/github_dark" ]; then
+            cp -r profile-summary-card-output/github_dark/* profile-summary-card-output/dark-mode/ || true
+          fi
+          
+          if [ -d "profile-summary-card-output/github" ]; then
+            cp -r profile-summary-card-output/github/* profile-summary-card-output/light-mode/ || true
+          fi
           
           # Remove all themed folders EXCEPT dark-mode and light-mode
-          find profile-summary-card-output/ -maxdepth 1 -mindepth 1 -not -name "dark-mode" -not -name "light-mode" -exec rm -rf {} +
+          find profile-summary-card-output/ -maxdepth 1 -mindepth 1 -type d -not -name "dark-mode" -not -name "light-mode" -exec rm -rf {} + 2>/dev/null || true
 
       - name: Commit and Push
         run: |
