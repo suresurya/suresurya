@@ -1,3 +1,4 @@
+<img width="200" height="200" alt="spider-man-spiderman" src="https://github.com/user-attachments/assets/2535a4fd-15a7-4967-8583-15d93d7c5228" />
 I’m **S Sri Venkat Rama Surya** — A Java Backend Developer ☕  
 ---
 
