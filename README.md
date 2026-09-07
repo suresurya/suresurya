@@ -1,15 +1,19 @@
-
 I’m **S Sri Venkat Rama Surya** — A Java Backend Developer ☕  
 ---
 
 ### 👨‍💻 About Me
-I am **Sure Sri Venak Rama Surya**, a passionate **Java Developer (Fresher)** with strong fundamentals in **Core Java** and hands-on experience in:
 
-- 🌱 Spring Boot  
-- 🔗 REST APIs  
-- 🗄️ MySQL  
-- 🔌 JDBC  
-- 🧩 Hibernate  
+<img align="right" width="200" height="200" alt="Yami_3" src="https://github.com/user-attachments/assets/0aba00a6-a340-46e7-b885-9debcce65321" />
+
+I am **S Sri Venkat Rama Surya**, a passionate **Java Developer (Fresher)** with strong fundamentals in **Core Java** and hands-on experience in:
+
+- 🌱 Spring Boot
+- 🔗 REST APIs
+- 🗄️ MySQL
+- 🔌 JDBC
+- 🧩 Hibernate
+
+<br clear="right"/>
 
 <p align="center">
   <picture>
@@ -46,10 +50,5 @@ I am **Sure Sri Venak Rama Surya**, a passionate **Java Developer (Fresher)** wi
 - 📧 Email: suresrivenkatramasurya@gmail.com
 
 ---
-
-### ⚡ Fun Fact
 > Surpass your limits. Right here. Right now.
-
 ---
-
-<img src="https://github.com/user-attachments/assets/a5f3877e-a1ce-4dac-83d9-baccf9fc8472" width="100%" />
